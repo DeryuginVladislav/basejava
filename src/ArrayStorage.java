@@ -15,11 +15,7 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        int nullIndex = 0;
-        while (storage[nullIndex] != null) {
-            nullIndex++;
-        }
-        storage[nullIndex] = r;
+        storage[size] = r;
         size++;
     }
 
@@ -33,17 +29,19 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        int counter = 0;
+        int deletedIndex = 0;
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid == uuid) {
                 storage[i] = null;
-                counter++;
+                deletedIndex++;
                 size--;
                 break;
             }
         }
-        for (int i = --counter; i < size; i++) {
-            storage[i] = storage[i + 1];
+        if (deletedIndex > 0) {
+            for (int i = --deletedIndex; i < size; i++) {
+                storage[i] = storage[i + 1];
+            }
         }
     }
 
