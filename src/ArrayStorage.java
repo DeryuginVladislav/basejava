@@ -34,7 +34,7 @@ public class ArrayStorage {
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid == uuid) {
                 storage[i] = null;
-                isDeleted =true;
+                isDeleted = true;
                 size--;
                 break;
             }
