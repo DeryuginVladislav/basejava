@@ -8,9 +8,9 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10000];
-    int size;
-    int index;
+    private static final int STORAGE_VALUE = 10000;
+    private Resume[] storage = new Resume[STORAGE_VALUE];
+    private int size;
 
     public void clear() {
         Arrays.fill(storage, 0, size, null);
@@ -18,40 +18,42 @@ public class ArrayStorage {
     }
 
     public void update(Resume r) {
-        if (isExist(r.uuid)) {
-            storage[index] = r;
+        int index = getIndex(r.getUuid());
+        if (index == -1) {
+            System.out.println("Error: резюме c uuid = " + r.getUuid() + " не существует");
         } else {
-            System.out.println("Error: резюме c uuid = " + r.uuid + " не существует");
+            storage[index] = r;
         }
     }
 
     public void save(Resume r) {
-        if (size != storage.length) {
-            if (!isExist(r.uuid)) {
-                storage[size] = r;
-                size++;
-            } else {
-                System.out.println("Error: резюме c uuid = " + r.uuid + " уже существует");
-            }
+        int index = getIndex(r.getUuid());
+        if (index != -1) {
+            System.out.println("Error: резюме c uuid = " + r.getUuid() + " уже существует");
+        } else if (size == STORAGE_VALUE) {
+            System.out.println("Error: массив переполнен");
         } else {
-            System.out.println("Error: массив заполнен");
+            storage[size] = r;
+            size++;
         }
     }
 
     public Resume get(String uuid) {
-        if (isExist(uuid)) {
-            return storage[index];
+        int index = getIndex(uuid);
+        if (index == -1) {
+            return null;
         }
-        return null;
+        return storage[index];
     }
 
     public void delete(String uuid) {
-        if (isExist(uuid)) {
+        int index = getIndex(uuid);
+        if (index == -1) {
+            System.out.println("Error: резюме c uuid = " + uuid + " не существует");
+        } else {
             storage[index] = storage[size - 1];
             storage[size - 1] = null;
             size--;
-        } else {
-            System.out.println("Error: резюме c uuid = " + uuid + " не существует");
         }
     }
 
@@ -66,13 +68,13 @@ public class ArrayStorage {
         return size;
     }
 
-    private boolean isExist(String uuid) {
+    private int getIndex(String uuid) {
+        int index = -1;
         for (int i = 0; i < size; i++) {
-            if (storage[i].uuid == uuid) {
-                index = i;
-                return true;
+            if (storage[i].getUuid() == uuid) {
+                return index = i;
             }
         }
-        return false;
+        return index;
     }
 }
