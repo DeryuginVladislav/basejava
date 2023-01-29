@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.LinkedList;
@@ -16,32 +14,24 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
-        if (!storage.contains(r)) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            int index = storage.indexOf(r);
-            storage.set(index, r);
-        }
+    public void doUpdate(Resume r, Object searchKey) {
+        int index = storage.indexOf(r);
+        storage.set(index, r);
     }
 
     @Override
-    public void save(Resume r) {
-        if (storage.contains(r)) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            storage.add(r);
-        }
+    public void doSave(Resume r, Object searchKey) {
+        storage.add(r);
     }
 
     @Override
-    public Resume get(String uuid) {
-        return searchResume(uuid);
+    public Resume doGet(Object searchKey) {
+        return storage.get(getIndex(searchKey));
     }
 
     @Override
-    public void delete(String uuid) {
-        storage.remove(searchResume(uuid));
+    public void doDelete(Object searchKey) {
+        storage.remove(getIndex(searchKey));
     }
 
     @Override
@@ -54,7 +44,13 @@ public class ListStorage extends AbstractStorage {
         return storage.size();
     }
 
-    private Resume searchResume(String uuid) {
+    @Override
+    protected boolean isExist(Object resume) {
+        return storage.contains(resume);
+    }
+
+    @Override
+    protected Resume getSearchKey(String uuid) {
         ListIterator<Resume> iterator = storage.listIterator();
         while (iterator.hasNext()) {
             Resume r = iterator.next();
@@ -62,6 +58,11 @@ public class ListStorage extends AbstractStorage {
                 return r;
             }
         }
-        throw new NotExistStorageException(uuid);
+        return null;
+    }
+
+    private int getIndex(Object searchKey) {
+        int index = storage.indexOf(searchKey);
+        return index;
     }
 }

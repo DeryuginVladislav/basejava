@@ -14,7 +14,7 @@ public class MainTestArrayStorage {
         final Resume r1 = new Resume("uuid1");
         final Resume r2 = new Resume("uuid2");
         final Resume r3 = new Resume("uuid3");
-
+//        ARRAY_STORAGE.get(r1.getUuid());
         ARRAY_STORAGE.save(r1);
         ARRAY_STORAGE.save(r2);
         ARRAY_STORAGE.save(r3);
@@ -28,6 +28,7 @@ public class MainTestArrayStorage {
 
         printAll();
         ARRAY_STORAGE.delete(r1.getUuid());
+//        ARRAY_STORAGE.get(r1.getUuid());
         printAll();
         ARRAY_STORAGE.save(new Resume("uuid1"));
         printAll();

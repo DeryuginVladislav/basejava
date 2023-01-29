@@ -1,7 +1,5 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.ExistStorageException;
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
@@ -20,43 +18,30 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    public void update(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(r.getUuid());
-        } else {
-            storage[index] = r;
-        }
+    @Override
+    public void doUpdate(Resume r, Object searchKey) {
+        storage[(int) searchKey] = r;
     }
 
-    public final void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else if (size >= STORAGE_VALUE) {
+    @Override
+    public final void doSave(Resume r, Object searchKey) {
+        if (size >= STORAGE_VALUE) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            saveResume(r, index);
+            saveResume(r, (int) searchKey);
             size++;
         }
     }
 
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
+    @Override
+    public Resume doGet(Object searchKey) {
+        return storage[(int) searchKey];
     }
 
-    public final void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            deleteResume(index);
-            size--;
-        }
+    @Override
+    public final void doDelete(Object searchKey) {
+        deleteResume((int) searchKey);
+        size--;
     }
 
     public Resume[] getAll() {
@@ -67,9 +52,14 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
+    }
+
     protected abstract void saveResume(Resume r, int index);
 
     protected abstract void deleteResume(int index);
 
-    protected abstract int getIndex(String uuid);
+    protected abstract Integer getSearchKey(String uuid);
 }
