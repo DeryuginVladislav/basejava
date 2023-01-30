@@ -2,11 +2,11 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListStorage extends AbstractStorage {
-    private final LinkedList<Resume> storage = new LinkedList<>();
+    private final List<Resume> storage = new ArrayList<>();
 
     @Override
     public void clear() {
@@ -14,29 +14,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void doUpdate(Resume r, Object searchKey) {
-        int index = storage.indexOf(r);
-        storage.set(index, r);
+    public void doUpdate(Resume r, Object index) {
+        storage.set((Integer) index, r);
     }
 
     @Override
-    public void doSave(Resume r, Object searchKey) {
+    public void doSave(Resume r, Object index) {
         storage.add(r);
     }
 
     @Override
-    public Resume doGet(Object searchKey) {
-        return storage.get(getIndex(searchKey));
+    public Resume doGet(Object index) {
+        return storage.get((Integer) index);
     }
 
     @Override
-    public void doDelete(Object searchKey) {
-        storage.remove(getIndex(searchKey));
+    public void doDelete(Object index) {
+        storage.remove((int) index);
     }
 
     @Override
     public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
+        return storage.toArray(new Resume[0]);
     }
 
     @Override
@@ -45,24 +44,18 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected boolean isExist(Object resume) {
-        return storage.contains(resume);
+    protected boolean isExist(Object index) {
+        return index != null;
     }
 
     @Override
-    protected Resume getSearchKey(String uuid) {
-        ListIterator<Resume> iterator = storage.listIterator();
-        while (iterator.hasNext()) {
-            Resume r = iterator.next();
+    protected Integer getSearchKey(String uuid) {
+        for (int i = 0; i < storage.size(); i++) {
+            Resume r = storage.get(i);
             if (r.getUuid().equals(uuid)) {
-                return r;
+                return i;
             }
         }
         return null;
-    }
-
-    private int getIndex(Object searchKey) {
-        int index = storage.indexOf(searchKey);
-        return index;
     }
 }
