@@ -36,17 +36,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>( storage.values());
-        list.sort((r1, r2) -> {
-            int result = r1.getFullName().compareTo(r2.getFullName());
-            if (result != 0) {
-                return result;
-            } else {
-                return r1.getUuid().compareTo(r2.getUuid());
-            }
-        });
-        return list;
+    public List<Resume> copyUnsortedPart() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override

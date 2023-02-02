@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
+
 /*    private static class ResumeComparator implements Comparator<Resume> {
         @Override
         public int compare(Resume o1, Resume o2) {

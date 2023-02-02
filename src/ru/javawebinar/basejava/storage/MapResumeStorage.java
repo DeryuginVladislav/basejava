@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapStorage2 extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -28,8 +28,7 @@ public class MapStorage2 extends AbstractStorage {
 
     @Override
     public Resume doGet(Object resumeSearchKey) {
-        Resume r = (Resume) resumeSearchKey;
-        return storage.get(r.getUuid());
+        return (Resume) resumeSearchKey;
     }
 
     @Override
@@ -39,17 +38,8 @@ public class MapStorage2 extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>(storage.values());
-        list.sort((r1, r2) -> {
-            int result = r1.getFullName().compareTo(r2.getFullName());
-            if (result != 0) {
-                return result;
-            } else {
-                return r1.getUuid().compareTo(r2.getUuid());
-            }
-        });
-        return list;
+    public List<Resume> copyUnsortedPart() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override
@@ -64,6 +54,6 @@ public class MapStorage2 extends AbstractStorage {
 
     @Override
     protected boolean isExist(Object resume) {
-        return storage.containsValue(resume);
+        return resume != null;
     }
 }

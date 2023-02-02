@@ -34,15 +34,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        storage.sort((r1, r2) -> {
-            int result = r1.getFullName().compareTo(r2.getFullName());
-            if (result != 0) {
-                return result;
-            } else {
-                return r1.getUuid().compareTo(r2.getUuid());
-            }
-        });
+    protected List<Resume> copyUnsortedPart() {
         return storage;
     }
 
