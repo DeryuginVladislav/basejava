@@ -9,10 +9,10 @@ public class MainCollections {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private static final Resume R_1 = new Resume(UUID_1);
-    private static final Resume R_2 = new Resume(UUID_2);
-    private static final Resume R_3 = new Resume(UUID_3);
-    private static final Resume R_4 = new Resume(UUID_4);
+    private static final Resume R_1 = new Resume(UUID_1,"");
+    private static final Resume R_2 = new Resume(UUID_2,"");
+    private static final Resume R_3 = new Resume(UUID_3,"");
+    private static final Resume R_4 = new Resume(UUID_4,"");
 
     public static void main(String[] args) {
         Collection<Resume> collection = new ArrayList<>();
@@ -50,5 +50,7 @@ public class MainCollections {
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
+
+        List<Resume> resumeList = Arrays.asList(R_1, R_2, R_3);
     }
 }

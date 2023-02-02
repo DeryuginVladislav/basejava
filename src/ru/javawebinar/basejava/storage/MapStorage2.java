@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class MapStorage2 extends AbstractStorage {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -16,28 +16,31 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void doUpdate(Resume r, Object uuid) {
-        storage.put((String) uuid, r);
+    public void doUpdate(Resume r, Object resumeSearchKey) {
+        Resume rSearchKey = (Resume) resumeSearchKey;
+        storage.put(rSearchKey.getUuid(), r);
     }
 
     @Override
-    public void doSave(Resume r, Object uuid) {
-        storage.put((String) uuid, r);
+    public void doSave(Resume r, Object resumeSearchKey) {
+        storage.put(r.getUuid(), r);
     }
 
     @Override
-    public Resume doGet(Object uuid) {
-        return storage.get(uuid);
+    public Resume doGet(Object resumeSearchKey) {
+        Resume r = (Resume) resumeSearchKey;
+        return storage.get(r.getUuid());
     }
 
     @Override
-    public void doDelete(Object uuid) {
-        storage.remove(uuid);
+    public void doDelete(Object resumeSearchKey) {
+        Resume r = (Resume) resumeSearchKey;
+        storage.remove(r.getUuid());
     }
 
     @Override
     public List<Resume> getAllSorted() {
-        List<Resume> list = new ArrayList<>( storage.values());
+        List<Resume> list = new ArrayList<>(storage.values());
         list.sort((r1, r2) -> {
             int result = r1.getFullName().compareTo(r2.getFullName());
             if (result != 0) {
@@ -55,12 +58,12 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    protected String getSearchKey(String uuid) {
-        return uuid;
+    protected Resume getSearchKey(String uuid) {
+        return storage.get(uuid);
     }
 
     @Override
-    protected boolean isExist(Object uuid) {
-        return storage.containsKey(uuid);
+    protected boolean isExist(Object resume) {
+        return storage.containsValue(resume);
     }
 }

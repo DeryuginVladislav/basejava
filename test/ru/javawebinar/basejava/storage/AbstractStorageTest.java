@@ -7,7 +7,9 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -25,10 +27,10 @@ public abstract class AbstractStorageTest {
 
 
     static {
-        R_1 = new Resume(UUID_1);
-        R_2 = new Resume(UUID_2);
-        R_3 = new Resume(UUID_3);
-        R_4 = new Resume(UUID_4);
+        R_1 = new Resume(UUID_1, "fullName1");
+        R_2 = new Resume(UUID_2, "fullName2");
+        R_3 = new Resume(UUID_3, "fullName3");
+        R_4 = new Resume(UUID_4, "fullName4");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -47,13 +49,13 @@ public abstract class AbstractStorageTest {
     public void clear() {
         storage.clear();
         assertSize(0);
-        Resume[] resumes = new Resume[0];
-        assertArrayEquals(resumes, storage.getAll());
+        List<Resume> list = new ArrayList<>();
+        assertEquals(list, storage.getAllSorted());
     }
 
     @Test
     public void update() {
-        Resume r = new Resume(UUID_2);
+        Resume r = new Resume(UUID_2, "otherFullName");
         storage.update(r);
         assertSame(r, storage.get(UUID_2));
     }
@@ -81,10 +83,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void getAll() {
-        Resume[] expected = {R_1, R_2, R_3};
-        Resume[] actual = storage.getAll();
-        Arrays.sort(actual);
-        assertArrayEquals(expected, actual);
+        List<Resume> expected = Arrays.asList(R_1, R_2, R_3);
+        List<Resume> actual = storage.getAllSorted();
+        assertEquals(expected, actual);
         assertSize(3);
     }
 
@@ -100,7 +101,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(new Resume(UUID_2));
+        storage.save(new Resume(UUID_2, "fullName"));
     }
 
     @Test(expected = StorageException.class)
