@@ -4,17 +4,17 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public abstract class AbstractStorageTest {
-    private final Storage storage;
+    protected final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -27,10 +27,10 @@ public abstract class AbstractStorageTest {
 
 
     static {
-        R_1 = new Resume(UUID_1, "fullName1");
-        R_2 = new Resume(UUID_2, "fullName2");
-        R_3 = new Resume(UUID_3, "fullName3");
-        R_4 = new Resume(UUID_4, "fullName4");
+        R_1 = new Resume(UUID_1, "Name1");
+        R_2 = new Resume(UUID_2, "Name2");
+        R_3 = new Resume(UUID_3, "Name3");
+        R_4 = new Resume(UUID_4, "Name4");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -55,7 +55,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume r = new Resume(UUID_2, "otherFullName");
+        Resume r = new Resume(UUID_2, "newName");
         storage.update(r);
         assertSame(r, storage.get(UUID_2));
     }
@@ -82,7 +82,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test
-    public void getAll() {
+    public void getAllSorted() {
         List<Resume> expected = Arrays.asList(R_1, R_2, R_3);
         List<Resume> actual = storage.getAllSorted();
         assertEquals(expected, actual);
@@ -102,19 +102,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
         storage.save(new Resume(UUID_2, "fullName"));
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveOverflow() {
-        storage.clear();
-        try {
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_VALUE; i++) {
-                storage.save(new Resume());
-            }
-        } catch (Exception e) {
-            fail("overflow happened ahead of time");
-        }
-        storage.save(new Resume());
     }
 
     @Test(expected = NotExistStorageException.class)
