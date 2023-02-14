@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static ru.javawebinar.basejava.ResumeTestData.createResume;
 
 public abstract class AbstractStorageTest {
     protected final Storage storage;
@@ -27,10 +28,10 @@ public abstract class AbstractStorageTest {
 
 
     static {
-        R_1 = new Resume(UUID_1, "Name1");
-        R_2 = new Resume(UUID_2, "Name2");
-        R_3 = new Resume(UUID_3, "Name3");
-        R_4 = new Resume(UUID_4, "Name4");
+        R_1 = createResume(UUID_1, "Name1");
+        R_2 = createResume(UUID_2, "Name2");
+        R_3 = createResume(UUID_3, "Name3");
+        R_4 = createResume(UUID_4, "Name4");
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -55,7 +56,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume r = new Resume(UUID_2, "newName");
+        Resume r = createResume(UUID_2, "newName");
         storage.update(r);
         assertSame(r, storage.get(UUID_2));
     }
@@ -101,7 +102,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(new Resume(UUID_2, "fullName"));
+        storage.save(createResume(UUID_2, "fullName"));
     }
 
     @Test(expected = NotExistStorageException.class)

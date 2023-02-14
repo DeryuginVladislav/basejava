@@ -1,15 +1,17 @@
 package ru.javawebinar.basejava;
 
 import ru.javawebinar.basejava.model.*;
+import ru.javawebinar.basejava.util.DateUtil;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class ResumeTestData {
-    public static void main(String[] args) {
-        Resume resume = new Resume("uuid1", "Григорий Кислин");
+    public static Resume createResume(String uuid, String fullName) {
+        Resume resume = new Resume(uuid, fullName);
 
         resume.addContact(ContactType.PHONE, "+7 (921) 855-0482");
         resume.addContact(ContactType.SKYPE, "grigory.kislin");
@@ -79,7 +81,7 @@ public class ResumeTestData {
         List<Period> periodsOfWork = new ArrayList<>();
         periodsOfWork.add(new Period(
                 "Автор проекта",
-                LocalDate.of(2013, 10, 1),
+                DateUtil.of(2013, Month.OCTOBER),
                 LocalDate.now(),
                 "Создание, организация и проведение Java онлайн проектов и стажировок."));
         companies.add(new Organization("Java Online Projects", "https://javaops.ru/", periodsOfWork));
@@ -87,8 +89,8 @@ public class ResumeTestData {
         periodsOfWork.clear();
         periodsOfWork.add(new Period(
                 "Старший разработчик (backend)",
-                LocalDate.of(2014, 10, 1),
-                LocalDate.of(2016, 01, 1),
+                DateUtil.of(2014, Month.OCTOBER),
+                DateUtil.of(2016, Month.JANUARY),
                 "Проектирование и разработка онлайн платформы управления проектами Wrike (Java 8 API, \n" +
                         "Maven, Spring, MyBatis, Guava, Vaadin, PostgreSQL, Redis). Двухфакторная аутентификация, \n" +
                         " авторизация по OAuth1, OAuth2, JWT SSO."));
@@ -97,8 +99,8 @@ public class ResumeTestData {
         periodsOfWork.clear();
         periodsOfWork.add(new Period(
                 "Java архитектор",
-                LocalDate.of(2012, 04, 1),
-                LocalDate.of(2014, 10, 1),
+                DateUtil.of(2012, Month.APRIL),
+                DateUtil.of(2014, Month.OCTOBER),
                 "Организация процесса разработки системы ERP для разных окружений: релизная политика,\n" +
                         "версионирование, ведение CI (Jenkins), миграция базы (кастомизация Flyway), конфигурирование\n" +
                         "системы (pgBoucer, Nginx), AAA via SSO. Архитектура БД и серверной части системы. Разработка\n" +
@@ -113,8 +115,8 @@ public class ResumeTestData {
         List<Period> periodsOfStudy = new ArrayList<>();
         periodsOfStudy.add(new Period(
                 "Ведущий программист",
-                LocalDate.of(2010, 12, 1),
-                LocalDate.of(2012, 04, 1),
+                DateUtil.of(2010, Month.DECEMBER),
+                DateUtil.of(2012, Month.APRIL),
                 "Участие в проекте Deutsche Bank CRM (WebLogic, Hibernate, Spring, Spring MVC, SmartGWT,\n" +
                         "GWT, Jasper, Oracle). Реализация клиентской и серверной части CRM. Реализация RIA-приложения\n" +
                         "для администрирования, мониторинга и анализа результатов в области алгоритмического\n" +
@@ -124,8 +126,8 @@ public class ResumeTestData {
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Ведущий специалист",
-                LocalDate.of(2008, 06, 1),
-                LocalDate.of(2010, 12, 1),
+                DateUtil.of(2008, Month.JUNE),
+                DateUtil.of(2010, Month.DECEMBER),
                 "Дизайн и имплементация Java EE фреймворка для отдела \"Платежные Системы\" (GlassFish v2.1,\n" +
                         "v3, OC4J, EJB3, JAX-WS RI 2.1, Servlet 2.4, JSP, JMX, JMS, Maven2). Реализация\n" +
                         "администрирования, статистики и мониторинга фреймворка. Разработка online JMX клиента\n" +
@@ -135,8 +137,8 @@ public class ResumeTestData {
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Разработчик ПО",
-                LocalDate.of(2007, 03, 1),
-                LocalDate.of(2008, 06, 1),
+                DateUtil.of(2007, Month.MARCH),
+                DateUtil.of(2008, Month.JUNE),
                 "Реализация клиентской (Eclipse RCP) и серверной (JBoss 4.2, Hibernate 3.0, Tomcat, JMS)\n" +
                         " частей кластерного J2EE приложения (OLAP, Data mining)."));
         companies.add(new Organization("Enkata", "http://enkata.com/", periodsOfWork));
@@ -144,8 +146,8 @@ public class ResumeTestData {
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Разработчик ПО",
-                LocalDate.of(2005, 01, 1),
-                LocalDate.of(2007, 02, 1),
+                DateUtil.of(2005, Month.JANUARY),
+                DateUtil.of(2007, Month.FEBRUARY),
                 "Разработка информационной модели, проектирование интерфейсов, реализация и отладка ПО на\n" +
                         " мобильной IN платформе Siemens @vantage (Java, Unix)."));
         companies.add(new Organization("Siemens AG", "https://www.siemens.com/ru/ru/home.html", periodsOfWork));
@@ -153,8 +155,8 @@ public class ResumeTestData {
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Инженер по аппаратному и программному тестированию",
-                LocalDate.of(1997, 9, 1),
-                LocalDate.of(2005, 01, 1),
+                DateUtil.of(1997, Month.SEPTEMBER),
+                DateUtil.of(2005, Month.JANUARY),
                 "Тестирование, отладка, внедрение ПО цифровой телефонной станции Alcatel 1000 S12 (CHILL,\n" +
                         " ASM)."));
         companies.add(new Organization("Alcatel", "http://www.alcatel.ru/", periodsOfWork));
@@ -165,45 +167,45 @@ public class ResumeTestData {
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Functional Programming Principles in Scala' by Martin Odersky",
-                LocalDate.of(2013, 03, 1),
-                LocalDate.of(2013, 05, 1),
+                DateUtil.of(2013, Month.MARCH),
+                DateUtil.of(2013, Month.MAY),
                 null));
         educationalOrganizations.add(new Organization("Coursera", "https://www.coursera.org/learn", periodsOfStudy));
 
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Курс Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.",
-                LocalDate.of(2011, 03, 1),
-                LocalDate.of(2011, 04, 1),
+                DateUtil.of(2011, Month.MARCH),
+                DateUtil.of(2011, Month.APRIL),
                 null));
         educationalOrganizations.add(new Organization("Luxoft", "http://www.luxoft-training.ru", periodsOfStudy));
 
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "3 месяца обучения мобильным IN сетям (Берлин)",
-                LocalDate.of(2005, 01, 1),
-                LocalDate.of(2005, 04, 1),
+                DateUtil.of(2005, Month.JANUARY),
+                DateUtil.of(2005, Month.APRIL),
                 null));
         educationalOrganizations.add(new Organization("Siemens AG", "http://www.siemens.ru/", periodsOfStudy));
 
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "6 месяцев обучения цифровым телефонным сетям (Москва)",
-                LocalDate.of(1997, 9, 1),
-                LocalDate.of(1998, 03, 1),
+                DateUtil.of(1997, Month.SEPTEMBER),
+                DateUtil.of(1998, Month.MARCH),
                 null));
         educationalOrganizations.add(new Organization("Alcatel", "http://www.alcatel.ru/", periodsOfStudy));
 
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Аспирантура (программист С, С++)",
-                LocalDate.of(1993, 9, 1),
-                LocalDate.of(1996, 07, 1),
+                DateUtil.of(1993, Month.SEPTEMBER),
+                DateUtil.of(1996, Month.JULY),
                 null));
         periodsOfStudy.add(new Period(
                 "Инженер (программист Fortran, C)",
-                LocalDate.of(1987, 9, 1),
-                LocalDate.of(1993, 07, 1),
+                DateUtil.of(1987, Month.SEPTEMBER),
+                DateUtil.of(1993, Month.JULY),
                 null));
         educationalOrganizations.add(new Organization("Санкт-Петербургский национальный исследовательский университет",
                 "https://itmo.ru/", periodsOfStudy));
@@ -211,14 +213,14 @@ public class ResumeTestData {
         periodsOfStudy.clear();
         periodsOfStudy.add(new Period(
                 "Закончил с отличием",
-                LocalDate.of(1984, 9, 1),
-                LocalDate.of(1987, 06, 1),
+                DateUtil.of(1984, Month.SEPTEMBER),
+                DateUtil.of(1987, Month.JUNE),
                 null));
         educationalOrganizations.add(new Organization("Заочная физико-техническая школа при МФТИ",
                 "https://mipt.ru/", periodsOfStudy));
         resume.addSection(SectionType.EDUCATION, new OrganizationSection(educationalOrganizations));
 
-        for (ContactType type : ContactType.values()) {
+       /* for (ContactType type : ContactType.values()) {
             System.out.print("" + type.getTitle() + " : ");
             System.out.println(resume.getContact(type));
         }
@@ -227,6 +229,7 @@ public class ResumeTestData {
             System.out.println("" + type.getTitle() + " : ");
             System.out.println(resume.getSection(type));
             System.out.println();
-        }
+        }*/
+        return resume;
     }
 }
