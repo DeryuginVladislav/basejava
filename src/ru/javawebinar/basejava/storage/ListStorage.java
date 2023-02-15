@@ -34,7 +34,7 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected List<Resume> copyUnsortedPart() {
+    protected List<Resume> doCopyAll() {
         return new ArrayList<>(storage);
     }
 
