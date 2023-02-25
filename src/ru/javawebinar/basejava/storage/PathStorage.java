@@ -2,7 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.serialization.SerializationStrategy;
+import ru.javawebinar.basejava.storage.serialization.SerializationStrategy;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -11,10 +11,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
     protected final Path directory;
-    private SerializationStrategy serializationStrategy;
+    private final SerializationStrategy serializationStrategy;
 
     protected PathStorage(String dir, SerializationStrategy serializationStrategy) {
         directory = Paths.get(dir);
@@ -27,11 +28,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try {
-            Files.list(directory).forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new StorageException("Path delete error", null, e);
-        }
+        getStreamPaths().forEach(this::doDelete);
     }
 
     @Override
@@ -74,21 +71,13 @@ public class PathStorage extends AbstractStorage<Path> {
     @Override
     protected List<Resume> doCopyAll() {
         List<Resume> list = new ArrayList<>();
-        try {
-            Files.list(directory).forEach(path -> list.add(doGet(path)));
-        } catch (IOException e) {
-            throw new StorageException("Copy all error", null, e);
-        }
+        getStreamPaths().forEach(path -> list.add(doGet(path)));
         return list;
     }
 
     @Override
     public int size() {
-        try {
-            return (int) Files.list(directory).count();
-        } catch (IOException e) {
-            throw new StorageException("Open directory error", null, e);
-        }
+        return (int) getStreamPaths().count();
     }
 
     @Override
@@ -98,6 +87,14 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected Path getSearchKey(String uuid) {
-        return new File(directory.toFile(), uuid).toPath();
+        return directory.resolve(uuid);
+    }
+
+    private Stream<Path> getStreamPaths() {
+        try {
+            return Files.list(directory);
+        } catch (IOException e) {
+            throw new StorageException("Open directory error", null, e);
+        }
     }
 }
