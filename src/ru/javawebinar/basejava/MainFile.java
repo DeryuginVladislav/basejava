@@ -33,19 +33,21 @@ public class MainFile {
 
         //Рекурсивный обход
         System.out.println("\n\nРекурсивный обход:");
-        MainFile.printList("D:\\Users\\vladd\\basejava");
+        MainFile.printList("D:\\Users\\vladd\\basejava", 0);
 
     }
 
-    private static void printList(String path) throws IOException {
+    private static void printList(String path, int depth) throws IOException {
+        String indent = new String(new char[depth]).replace("\0", "  ");
+
         File dir = new File(path);
         File[] fileList = dir.listFiles();
         for (File f : fileList) {
             if (f.isDirectory()) {
-                System.out.println(f.getPath());
-                printList(f.getCanonicalPath());
+                System.out.println(indent + f.getPath());
+                printList(f.getCanonicalPath(), depth + 1);
             } else {
-                System.out.println(f.getName());
+                System.out.println(indent + f.getName());
             }
         }
     }

@@ -78,8 +78,8 @@ public class ResumeTestData {
 
 
         List<Organization> companies = new ArrayList<>();
-        List<Period> periodsOfWork = new ArrayList<>();
-        periodsOfWork.add(new Period(
+        List<Organization.Period> periodsOfWork = new ArrayList<>();
+        periodsOfWork.add(new Organization.Period(
                 "Автор проекта",
                 DateUtil.of(2013, Month.OCTOBER),
                 LocalDate.now(),
@@ -87,7 +87,7 @@ public class ResumeTestData {
         companies.add(new Organization("Java Online Projects", "https://javaops.ru/", periodsOfWork));
 
         periodsOfWork.clear();
-        periodsOfWork.add(new Period(
+        periodsOfWork.add(new Organization.Period(
                 "Старший разработчик (backend)",
                 DateUtil.of(2014, Month.OCTOBER),
                 DateUtil.of(2016, Month.JANUARY),
@@ -97,7 +97,7 @@ public class ResumeTestData {
         companies.add(new Organization("Wrike", "https://www.wrike.com/", periodsOfWork));
 
         periodsOfWork.clear();
-        periodsOfWork.add(new Period(
+        periodsOfWork.add(new Organization.Period(
                 "Java архитектор",
                 DateUtil.of(2012, Month.APRIL),
                 DateUtil.of(2014, Month.OCTOBER),
@@ -112,8 +112,8 @@ public class ResumeTestData {
         companies.add(new Organization("RIT Center", null, periodsOfWork));
 
 
-        List<Period> periodsOfStudy = new ArrayList<>();
-        periodsOfStudy.add(new Period(
+        List<Organization.Period> periodsOfStudy = new ArrayList<>();
+        periodsOfStudy.add(new Organization.Period(
                 "Ведущий программист",
                 DateUtil.of(2010, Month.DECEMBER),
                 DateUtil.of(2012, Month.APRIL),
@@ -124,7 +124,7 @@ public class ResumeTestData {
         companies.add(new Organization("Luxoft (Deutsche Bank)", "https://www.luxoft.ru/", periodsOfWork));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Ведущий специалист",
                 DateUtil.of(2008, Month.JUNE),
                 DateUtil.of(2010, Month.DECEMBER),
@@ -135,7 +135,7 @@ public class ResumeTestData {
         companies.add(new Organization("Yota", "https://www.yota.ru/", periodsOfWork));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Разработчик ПО",
                 DateUtil.of(2007, Month.MARCH),
                 DateUtil.of(2008, Month.JUNE),
@@ -144,7 +144,7 @@ public class ResumeTestData {
         companies.add(new Organization("Enkata", "http://enkata.com/", periodsOfWork));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Разработчик ПО",
                 DateUtil.of(2005, Month.JANUARY),
                 DateUtil.of(2007, Month.FEBRUARY),
@@ -153,7 +153,7 @@ public class ResumeTestData {
         companies.add(new Organization("Siemens AG", "https://www.siemens.com/ru/ru/home.html", periodsOfWork));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Инженер по аппаратному и программному тестированию",
                 DateUtil.of(1997, Month.SEPTEMBER),
                 DateUtil.of(2005, Month.JANUARY),
@@ -165,7 +165,7 @@ public class ResumeTestData {
 
         List<Organization> educationalOrganizations = new ArrayList<>();
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Functional Programming Principles in Scala' by Martin Odersky",
                 DateUtil.of(2013, Month.MARCH),
                 DateUtil.of(2013, Month.MAY),
@@ -173,7 +173,7 @@ public class ResumeTestData {
         educationalOrganizations.add(new Organization("Coursera", "https://www.coursera.org/learn", periodsOfStudy));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Курс Объектно-ориентированный анализ ИС. Концептуальное моделирование на UML.",
                 DateUtil.of(2011, Month.MARCH),
                 DateUtil.of(2011, Month.APRIL),
@@ -181,7 +181,7 @@ public class ResumeTestData {
         educationalOrganizations.add(new Organization("Luxoft", "http://www.luxoft-training.ru", periodsOfStudy));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "3 месяца обучения мобильным IN сетям (Берлин)",
                 DateUtil.of(2005, Month.JANUARY),
                 DateUtil.of(2005, Month.APRIL),
@@ -189,7 +189,7 @@ public class ResumeTestData {
         educationalOrganizations.add(new Organization("Siemens AG", "http://www.siemens.ru/", periodsOfStudy));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "6 месяцев обучения цифровым телефонным сетям (Москва)",
                 DateUtil.of(1997, Month.SEPTEMBER),
                 DateUtil.of(1998, Month.MARCH),
@@ -197,12 +197,12 @@ public class ResumeTestData {
         educationalOrganizations.add(new Organization("Alcatel", "http://www.alcatel.ru/", periodsOfStudy));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Аспирантура (программист С, С++)",
                 DateUtil.of(1993, Month.SEPTEMBER),
                 DateUtil.of(1996, Month.JULY),
                 null));
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Инженер (программист Fortran, C)",
                 DateUtil.of(1987, Month.SEPTEMBER),
                 DateUtil.of(1993, Month.JULY),
@@ -211,7 +211,7 @@ public class ResumeTestData {
                 "https://itmo.ru/", periodsOfStudy));
 
         periodsOfStudy.clear();
-        periodsOfStudy.add(new Period(
+        periodsOfStudy.add(new Organization.Period(
                 "Закончил с отличием",
                 DateUtil.of(1984, Month.SEPTEMBER),
                 DateUtil.of(1987, Month.JUNE),
