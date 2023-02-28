@@ -16,7 +16,7 @@ import static ru.javawebinar.basejava.ResumeTestData.createResume;
 
 public abstract class AbstractStorageTest {
     protected final Storage storage;
-    protected static final File STORAGE_DIR = new File("D:\\Users\\vladd\\basejava\\storage");
+    protected static final File STORAGE_DIR = new File("/home/vladislav/IdeaProjects/basejava/storage");
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
