@@ -32,5 +32,8 @@ public class MainStream {
             return element;
         }).toArray();
         System.out.println(Arrays.toString(array));
+
+        int result = Arrays.stream(array).reduce((accamulator, el) -> accamulator * el).getAsInt();
+        System.out.println(result);
     }
 }

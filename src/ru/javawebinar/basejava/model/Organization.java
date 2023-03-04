@@ -42,6 +42,7 @@ public class Organization implements Serializable {
         return periods;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
