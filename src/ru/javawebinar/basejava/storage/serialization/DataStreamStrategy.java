@@ -5,8 +5,8 @@ import ru.javawebinar.basejava.model.*;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 public class DataStreamStrategy implements SerializationStrategy {
 
@@ -15,13 +15,11 @@ public class DataStreamStrategy implements SerializationStrategy {
         try (DataOutputStream dos = new DataOutputStream(os)) {
             dos.writeUTF(resume.getUuid());
             dos.writeUTF(resume.getFullName());
-            dos.writeInt(resume.getContacts().size());
-            for (Map.Entry<ContactType, String> contact : resume.getContacts().entrySet()) {
+            writeWithException(resume.getContacts().entrySet(), dos, (contact) -> {
                 dos.writeUTF(contact.getKey().name());
                 dos.writeUTF(contact.getValue());
-            }
-            dos.writeInt(resume.getSections().size());
-            for (Map.Entry<SectionType, AbstractSection> section : resume.getSections().entrySet()) {
+            });
+            writeWithException(resume.getSections().entrySet(), dos, (section) -> {
                 SectionType sectionType = section.getKey();
                 dos.writeUTF(sectionType.name());
                 switch (sectionType) {
@@ -33,29 +31,26 @@ public class DataStreamStrategy implements SerializationStrategy {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         ListSection listSection = (ListSection) section.getValue();
-                        dos.writeInt(listSection.getStrings().size());
-                        for (String string : listSection.getStrings()) {
+                        writeWithException(listSection.getStrings(), dos, (string) -> {
                             dos.writeUTF(string);
-                        }
+                        });
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
                         OrganizationSection organizationSection = (OrganizationSection) section.getValue();
-                        dos.writeInt(organizationSection.getOrganizations().size());
-                        for (Organization organization : organizationSection.getOrganizations()) {
+                        writeWithException(organizationSection.getOrganizations(), dos, (organization) -> {
                             dos.writeUTF(organization.getTitle());
                             writeStringMayBeEmpty(organization.getWebsite(), dos);
-                            dos.writeInt(organization.getPeriods().size());
-                            for (Organization.Period period : organization.getPeriods()) {
+                            writeWithException(organization.getPeriods(), dos, (period) -> {
                                 dos.writeUTF(period.getTitle());
                                 dos.writeUTF(period.getStartDate().toString());
                                 dos.writeUTF(period.getEndDate().toString());
                                 writeStringMayBeEmpty(period.getDescription(), dos);
-                            }
-                        }
+                            });
+                        });
                         break;
                 }
-            }
+            });
         }
     }
 
@@ -63,10 +58,7 @@ public class DataStreamStrategy implements SerializationStrategy {
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
-            int contactSize = dis.readInt();
-            for (int i = 0; i < contactSize; i++) {
-                resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-            }
+            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             int sectionSize = dis.readInt();
             for (int i = 0; i < sectionSize; i++) {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
@@ -122,5 +114,27 @@ public class DataStreamStrategy implements SerializationStrategy {
             string = null;
         }
         return string;
+    }
+
+    private <T> void writeWithException(Collection<T> collection, DataOutputStream dos, Writer<T> writer) throws IOException {
+        dos.writeInt(collection.size());
+        for (T element : collection) {
+            writer.write(element);
+        }
+    }
+
+    private interface Writer<T> {
+        void write(T element) throws IOException;
+    }
+
+    private <T> void readWithException(DataInputStream dis, Reader reader) throws IOException {
+        int size = dis.readInt();
+        for (int i = 0; i < size; i++) {
+            reader.read();
+        }
+    }
+
+    private interface Reader<T> {
+        void read() throws IOException;
     }
 }
