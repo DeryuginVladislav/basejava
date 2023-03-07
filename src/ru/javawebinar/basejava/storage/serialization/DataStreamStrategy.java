@@ -31,9 +31,7 @@ public class DataStreamStrategy implements SerializationStrategy {
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         ListSection listSection = (ListSection) section.getValue();
-                        writeWithException(listSection.getStrings(), dos, (string) -> {
-                            dos.writeUTF(string);
-                        });
+                        writeWithException(listSection.getStrings(), dos, dos::writeUTF);
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -59,8 +57,7 @@ public class DataStreamStrategy implements SerializationStrategy {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
             readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
-            int sectionSize = dis.readInt();
-            for (int i = 0; i < sectionSize; i++) {
+            readWithException(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
@@ -69,35 +66,30 @@ public class DataStreamStrategy implements SerializationStrategy {
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
-                        int stringCount = dis.readInt();
                         List<String> strings = new ArrayList<>();
-                        for (int j = 0; j < stringCount; j++) {
-                            strings.add(dis.readUTF());
-                        }
+                        readWithException(dis, () -> strings.add(dis.readUTF()));
                         resume.addSection(sectionType, new ListSection(strings));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
-                        int organizationCount = dis.readInt();
                         List<Organization> organizations = new ArrayList<>();
-                        for (int j = 0; j < organizationCount; j++) {
+                        readWithException(dis, () -> {
                             String title = dis.readUTF();
                             String website = readStringMayBeEmpty(dis);
-                            int periodCount = dis.readInt();
                             List<Organization.Period> periods = new ArrayList<>();
-                            for (int k = 0; k < periodCount; k++) {
+                            readWithException(dis, () -> {
                                 String titlePeriod = dis.readUTF();
                                 LocalDate startDate = LocalDate.parse(dis.readUTF());
                                 LocalDate endDate = LocalDate.parse(dis.readUTF());
                                 String description = readStringMayBeEmpty(dis);
                                 periods.add(new Organization.Period(titlePeriod, startDate, endDate, description));
-                            }
+                            });
                             organizations.add(new Organization(title, website, periods));
-                        }
+                        });
                         resume.addSection(sectionType, new OrganizationSection(organizations));
                         break;
                 }
-            }
+            });
             return resume;
         }
     }
@@ -127,14 +119,14 @@ public class DataStreamStrategy implements SerializationStrategy {
         void write(T element) throws IOException;
     }
 
-    private <T> void readWithException(DataInputStream dis, Reader reader) throws IOException {
+    private void readWithException(DataInputStream dis, Reader reader) throws IOException {
         int size = dis.readInt();
         for (int i = 0; i < size; i++) {
             reader.read();
         }
     }
 
-    private interface Reader<T> {
+    private interface Reader {
         void read() throws IOException;
     }
 }
