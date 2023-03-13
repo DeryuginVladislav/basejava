@@ -1,30 +1,28 @@
 package ru.javawebinar.basejava;
 
 public class DeadLock {
-    private static final Object lock1 = new Object();
-    private static final Object lock2 = new Object();
+    private static final String lock1 = "lock1";
+    private static final String lock2 = "lock2";
 
     public static void main(String[] args) {
-        new Thread(() -> {
-            System.out.println("Thread1 Попытка захватить монитор lock1");
-            synchronized (DeadLock.lock1) {
-                System.out.println("Thread1 монитор lock1 захвачен");
-                System.out.println("Thread1 Попытка захватить монитор lock2");
-                synchronized (DeadLock.lock2) {
-                    System.out.println("Thread1 монитор lock2 захвачен");
-                }
-            }
-        }).start();
+        createThread(DeadLock.lock1, DeadLock.lock2);
+        createThread(DeadLock.lock2, DeadLock.lock1);
+    }
 
+    private static void createThread(Object lock1, Object lock2) {
         new Thread(() -> {
-            System.out.println("Thread2 Попытка захватить монитор lock2");
-            synchronized (DeadLock.lock2) {
-                System.out.println("Thread2 монитор lock2 захвачен");
-                System.out.println("Thread2 Попытка захватить монитор lock1");
-                synchronized (DeadLock.lock1) {
-                    System.out.println("Thread2 монитор lock1 захвачен");
+            System.out.println(getThreadName() + " Попытка захватить монитор " + lock1);
+            synchronized (lock1) {
+                System.out.println(getThreadName() + " монитор " + lock1 + " захвачен");
+                System.out.println(getThreadName() + " Попытка захватить монитор " + lock2);
+                synchronized (lock2) {
+                    System.out.println(getThreadName() + " монитор " + lock2 + " захвачен");
                 }
             }
         }).start();
+    }
+
+    private static String getThreadName() {
+        return Thread.currentThread().getName();
     }
 }
