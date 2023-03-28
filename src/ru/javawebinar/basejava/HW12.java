@@ -11,18 +11,21 @@ public class HW12 {
     }
 
     private static int minValue(int[] values) {
-        return Arrays.stream(values).distinct()
+        return Arrays.stream(values)
+                .distinct()
                 .sorted()
-                .reduce((result, element) -> result * 10 + element)
-                .getAsInt();
+                .reduce(0, (result, element) -> result * 10 + element);
     }
 
     private static List<Integer> oddOrEven(List<Integer> integers) {
         return integers.stream().filter(e -> {
-            if (integers.stream().reduce(Integer::sum).get() % 2 == 0) {
+            Integer sum = integers.stream().reduce(Integer::sum).get();
+            if (sum % 2 == 0) {
                 return e % 2 == 1;
             }
             return e % 2 == 0;
         }).collect(Collectors.toList());
     }
+
+
 }
