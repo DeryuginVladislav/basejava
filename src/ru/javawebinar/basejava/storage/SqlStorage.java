@@ -2,8 +2,10 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.model.AbstractSection;
 import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.SectionType;
 import ru.javawebinar.basejava.sql.SqlHelper;
 
 import java.sql.*;
@@ -51,6 +53,15 @@ public class SqlStorage implements Storage {
                 }
             }
             insertContact(r, conn);
+            try (PreparedStatement ps = conn.prepareStatement("INSERT INTO section (resume_uuid,type,value) VALUES (?,?,?)")) {
+                for (Map.Entry<SectionType, AbstractSection> entry : r.getSections().entrySet()) {
+                    ps.setString(1, r.getUuid());
+                    ps.setString(2, entry.getKey().name());
+                    ps.setString(3, entry.getValue().toString());
+                    ps.addBatch();
+                }
+                ps.executeBatch();
+            }
             return null;
         });
     }
@@ -71,6 +82,7 @@ public class SqlStorage implements Storage {
             do {
                 r.addContact(ContactType.valueOf(resultSet.getString("type")), resultSet.getString("value"));
             } while (resultSet.next());
+
             return r;
         });
     }
