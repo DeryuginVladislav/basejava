@@ -80,7 +80,7 @@
                                     <dt>Конечная дата:</dt>
                                     <dd>
                                         <input type="text" name="${type}${counter.index}endDate" size="10"
-                                               value="<%=DateUtil.format(period.getStartDate())%>"
+                                               value="<%=DateUtil.format(period.getEndDate())%>"
                                                placeholder="MM/yyyy">
                                     </dd>
                                 </dl>
