@@ -56,19 +56,19 @@ public class DataStreamStrategy implements SerializationStrategy {
     public Resume doRead(InputStream is) throws IOException {
         try (DataInputStream dis = new DataInputStream(is)) {
             Resume resume = new Resume(dis.readUTF(), dis.readUTF());
-            readWithException(dis, () -> resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
+            readWithException(dis, () -> resume.setContact(ContactType.valueOf(dis.readUTF()), dis.readUTF()));
             readWithException(dis, () -> {
                 SectionType sectionType = SectionType.valueOf(dis.readUTF());
                 switch (sectionType) {
                     case PERSONAL:
                     case OBJECTIVE:
-                        resume.addSection(sectionType, new TextSection(dis.readUTF()));
+                        resume.setSection(sectionType, new TextSection(dis.readUTF()));
                         break;
                     case ACHIEVEMENT:
                     case QUALIFICATIONS:
                         List<String> strings = new ArrayList<>();
                         readWithException(dis, () -> strings.add(dis.readUTF()));
-                        resume.addSection(sectionType, new ListSection(strings));
+                        resume.setSection(sectionType, new ListSection(strings));
                         break;
                     case EXPERIENCE:
                     case EDUCATION:
@@ -86,7 +86,7 @@ public class DataStreamStrategy implements SerializationStrategy {
                             });
                             organizations.add(new Organization(title, website, periods));
                         });
-                        resume.addSection(sectionType, new OrganizationSection(organizations));
+                        resume.setSection(sectionType, new OrganizationSection(organizations));
                         break;
                 }
             });

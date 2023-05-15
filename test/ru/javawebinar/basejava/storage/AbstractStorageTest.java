@@ -60,7 +60,7 @@ public abstract class AbstractStorageTest {
     @Test
     public void update() {
         Resume r = createResume(UUID_2, "newName");
-        r.addContact(ContactType.MOBILE,"89290309687");
+        r.setContact(ContactType.MOBILE,"89290309687");
         storage.update(r);
         assertEquals(r, storage.get(UUID_2));
     }

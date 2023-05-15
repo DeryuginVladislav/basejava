@@ -16,11 +16,23 @@ import java.util.UUID;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Resume implements Serializable {
     private static final long serialVersionUID = 1L;
+
+    public static final Resume EMPTY = new Resume();
+
     // Unique identifier
     private String uuid;
     private String fullName;
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+
+    static {
+        EMPTY.setSection(SectionType.OBJECTIVE, TextSection.EMPTY);
+        EMPTY.setSection(SectionType.PERSONAL, TextSection.EMPTY);
+        EMPTY.setSection(SectionType.ACHIEVEMENT, ListSection.EMPTY);
+        EMPTY.setSection(SectionType.QUALIFICATIONS, ListSection.EMPTY);
+        EMPTY.setSection(SectionType.EXPERIENCE, new OrganizationSection(Organization.EMPTY));
+        EMPTY.setSection(SectionType.EDUCATION, new OrganizationSection(Organization.EMPTY));
+    }
 
     public Resume() {
     }
@@ -44,6 +56,10 @@ public class Resume implements Serializable {
         return fullName;
     }
 
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     public String getContact(ContactType type) {
         return contacts.get(type);
     }
@@ -60,11 +76,11 @@ public class Resume implements Serializable {
         return sections;
     }
 
-    public void addContact(ContactType type, String contact) {
+    public void setContact(ContactType type, String contact) {
         contacts.put(type, contact);
     }
 
-    public void addSection(SectionType type, AbstractSection section) {
+    public void setSection(SectionType type, AbstractSection section) {
         sections.put(type, section);
     }
 

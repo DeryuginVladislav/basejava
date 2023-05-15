@@ -9,17 +9,23 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final Organization EMPTY = new Organization("", "", Period.EMPTY);
     private String title;
     private String website;
     private List<Period> periods;
 
     public Organization() {
+    }
+
+    public Organization(String title, String website, Period... periods) {
+        this(title, website, Arrays.asList(periods));
     }
 
     public Organization(String title, String website, List<Period> periods) {
@@ -72,6 +78,8 @@ public class Organization implements Serializable {
 
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Period implements Serializable {
+        public static final Period EMPTY = new Period();
+
         private String title;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate startDate;
